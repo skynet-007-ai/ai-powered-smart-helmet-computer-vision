@@ -1,44 +1,171 @@
-# AI-POWERED-HELMET
-AI-Powered Smart Helmet for Road Safety A prototype smart helmet using AI and computer vision to detect traffic signals, obstacles, and hazards in real time, aimed at improving rider safety. This repo documents the project’s code, models, and future development plans, including integration with NVIDIA Jetson Nano or Raspberry Pi 4.
+# 🪖 AI-Powered Smart Helmet for Road Safety
 
-# AI-Powered Smart Helmet for Road Safety
+An **AI-powered smart helmet prototype** that uses **computer vision** to detect important road elements and provide **real-time voice alerts** to two-wheeler riders.
 
-## Overview
-This project aims to develop an AI-powered smart helmet that enhances road safety by detecting traffic signals, road signs, obstacles, and potential hazards in real-time using computer vision and machine learning. The helmet is designed to alert riders, helping reduce accidents and improve awareness on the road.
-
-## Features
-- **Traffic Signal Detection:** Recognizes red, green, and yellow traffic lights.
-- **Road Sign Recognition:** Identifies important traffic signs for safe navigation.
-- **Obstacle Detection:** Detects obstacles such as animals, pedestrians, and vehicles.
-- **Crowd Density Alerts:** Warns when approaching crowded areas like schools or hospitals.
-- **Real-time Notifications:** Provides immediate alerts to the rider to take necessary actions.
-
-## Technologies Used
-- Python
-- OpenCV
-- TensorFlow / PyTorch (for model training)
-- Raspberry Pi 4 + Coral USB Edge TPU (for deployment) / Jetson Nano
-- Camera module for live feed processing
-
-## Current Status
-The prototype is currently running locally with basic AI models for traffic signal and obstacle detection. Integration with hardware like Raspberry Pi and Coral Edge TPU is planned for future development.
-
-## Future Plans
-- Improve model accuracy and speed using NVIDIA Jetson Nano.
-- Add advanced obstacle classification and pedestrian detection.
-- Develop a compact hardware prototype with helmet-mounted camera and speaker for alerts.
-- Explore real-time voice feedback and connectivity with mobile apps.
-
-## How to Contribute
-This is an ongoing project open to collaboration. If you are interested in contributing or have suggestions, please open an issue or submit a pull request.
-
-## Contact
-Harsh Kumar  
-Indian Institute of Technology Patna  
-Email: harsh_24a12res271@iitp.ac.in  
-LinkedIn: [your-linkedin-profile]  
+The goal of this project is to improve rider awareness and road safety using a lightweight **edge AI system** that can run on devices such as **Raspberry Pi or NVIDIA Jetson Nano**.
 
 ---
 
-*This project is aimed at improving road safety through AI and is seeking support from NVIDIA for hardware assistance and collaboration.*
+# 🏆 Achievement
 
+🥇 **1st Prize — Hack N Tech 1.0 (24-Hour Hackathon)**
+📍 Organized at **Indian Institute of Technology Patna**
+
+This prototype was developed during the hackathon as part of a **5-member team**.
+I proposed the project idea and worked as a **core contributor responsible for the AI system design and hardware prototype assembly**.
+
+---
+
+# 🎯 Problem Motivation
+
+Two-wheeler riders often face dangerous situations due to:
+
+* Heavy traffic
+* Limited visibility
+* Sudden obstacles
+* Lack of assistive safety systems
+
+This project explores how **computer vision running locally on edge hardware** can help riders detect nearby hazards and receive **real-time audio alerts**.
+
+All processing is done **locally**, so the system works **without internet connectivity**.
+
+---
+
+# ⚙️ System Overview
+
+The system captures live video from a camera mounted on the helmet and processes each frame using a **YOLOv8 object detection model**.
+
+Detected objects are mapped to **voice alerts** to notify the rider about potential hazards.
+
+### Pipeline
+
+Camera → Frame Capture → YOLOv8 Detection → Decision Logic → Voice Alert
+
+---
+
+# ✨ Current Detection Capabilities
+
+The current prototype uses **YOLOv8n pretrained on the COCO dataset**.
+
+The system currently detects and alerts for:
+
+* **Person** → Pedestrian detected ahead
+* **Bicycle** → Cyclist nearby
+* **Car** → Car approaching
+* **Motorcycle** → Motorbike nearby
+* **Bus** → Bus ahead
+* **Truck** → Truck nearby
+* **Traffic Light** → Traffic light ahead
+* **Stop Sign** → Stop sign detected
+* **Cow** → Animal on road ahead
+* **Dog** → Dog detected on road
+
+These detections trigger **audio alerts** to warn the rider.
+
+---
+
+# 🛠 Technologies Used
+
+* **Python**
+* **OpenCV**
+* **YOLOv8 (Ultralytics)**
+* **PyTorch**
+* **pyttsx3 (Text-to-Speech)**
+
+---
+
+# 🔧 Hardware Prototype
+
+The prototype hardware setup includes:
+
+* Raspberry Pi (compute unit)
+* Helmet-mounted camera
+* PAM audio amplifier module
+* Mini speaker system
+* Portable battery supply
+
+The **hardware assembly and prototype setup were implemented by me** during development.
+
+---
+
+# 📂 Project Structure
+
+```
+ai-powered-smart-helmet-computer-vision
+│
+├── src
+│   └── smart_helmet_detection_system.py
+│
+├── models
+│   ├── yolov8n.pt
+│   └── yolov8n_openvino_model
+│
+├── dataset
+│   └── traffic_symbols_sample
+│
+├── experiments
+│   └── prototype scripts used during development
+│
+├── tools
+│   ├── get_names.py
+│   └── test.py
+│
+├── docs
+│
+├── demo
+│
+├── requirements.txt
+└── README.md
+```
+
+---
+
+# 🚀 Running the Project
+
+Clone the repository
+
+```
+git clone https://github.com/skynet-007-ai/ai-powered-smart-helmet-computer-vision.git
+```
+
+Install dependencies
+
+```
+pip install -r requirements.txt
+```
+
+Run the system
+
+```
+python src/smart_helmet_detection_system.py
+```
+
+Press **q** to exit.
+
+---
+
+# 🔮 Future Improvements
+
+Planned improvements include:
+
+* Training **custom models for traffic sign detection**
+* Detecting more road-specific hazards
+* Optimizing inference using **OpenVINO / TensorRT**
+* Adding **vibration alerts inside the helmet**
+* Building a more compact wearable hardware design
+
+---
+
+# 👨‍💻 Author
+
+**Harsh Kumar**
+B.Sc. (Hons.) Computer Science & Data Analytics
+Indian Institute of Technology Patna
+
+GitHub: https://github.com/skynet-007-ai
+
+---
+
+# 📜 License
+
+This project is licensed under the **Apache 2.0 License**.

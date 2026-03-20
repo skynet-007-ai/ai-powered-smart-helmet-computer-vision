@@ -1,8 +1,7 @@
 import cv2
 import time
 import torch
-import pyttsx3
-import threading
+import os
 from ultralytics import YOLO
 
 # ------------------------------
@@ -12,85 +11,72 @@ from ultralytics import YOLO
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"🖥️ Using device: {device}")
 
-# ------------------------------
-# LOAD YOLO MODEL
-# ------------------------------
-
-model = YOLO("D:\My Projects\AI Powered Helmet Project\AI Powered Helmet For Road Safety\models\yolov8n.pt")
+model = YOLO(r"D:\My Projects\AI Powered Helmet Project\AI Powered Helmet For Road Safety\models\yolov8n.pt")
 model.to(device)
 
 # ------------------------------
-# TEXT TO SPEECH SETUP
-# ------------------------------
-
-engine = pyttsx3.init()
-engine.setProperty("rate", 160)
-engine.setProperty("volume", 1.0)
-
-speech_lock = threading.Lock()
-
-# ------------------------------
-# ALERT MESSAGES
+# ALERTS
 # ------------------------------
 
 alerts = {
-    "person": "Pedestrian detected ahead.",
+    "person": "Pedestrian detected ahead, pay attention",
     "bicycle": "Cyclist nearby.",
-    "car": "Car approaching.",
+    "car": "Multiple Cars approaching.",
     "motorcycle": "Motorbike nearby.",
     "bus": "Bus ahead.",
     "truck": "Truck nearby.",
-    "traffic light": "Traffic light ahead.",
+    "traffic light": "Traffic light ahead, follow the signal",
     "stop sign": "Stop sign detected. Please slow down.",
-    "cow": "Animal on road ahead.",
-    "dog": "Dog detected on road."
 }
 
 # ------------------------------
-# ALERT MANAGEMENT
+# ALERT CONTROL
 # ------------------------------
 
-alert_times = {}
-cooldown = 4  # seconds before repeating same alert
+last_spoken = {}
+cooldown = 3  # seconds
+
+import threading
 
 def speak_alert(message):
     now = time.time()
 
-    if now - alert_times.get(message, 0) < cooldown:
+    if now - last_spoken.get(message, 0) < cooldown:
         return
 
-    alert_times[message] = now
+    last_spoken[message] = now
+
+    print(f"🔊 Alert: {message}")
 
     def run():
-        with speech_lock:
-            print(f"🔊 Alert: {message}")
-            engine.say(message)
-            engine.runAndWait()
+        command = f'''powershell -Command "Add-Type -AssemblyName System.Speech; \
+        $speak = New-Object System.Speech.Synthesis.SpeechSynthesizer; \
+        $speak.Speak('{message}')"'''
 
+        os.system(command)
+
+    # 🔥 RUN IN BACKGROUND THREAD (NO LAG)
     threading.Thread(target=run, daemon=True).start()
 
-
 # ------------------------------
-# CAMERA SETUP
+# VIDEO INPUT
 # ------------------------------
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(r"D:\My Projects\AI Powered Helmet Project\Video Project.mp4")
 
 if not cap.isOpened():
-    print("❌ Cannot access webcam")
+    print("❌ Cannot open video")
     exit()
 
-cap.set(3, 640)
-cap.set(4, 480)
-
 print("\n🚦 AI Helmet Vision started. Press 'q' to quit.")
+print("🚀 Running AI Smart Helmet System...")
 
 # ------------------------------
-# FRAME TRACKING FOR STABILITY
+# FRAME TRACKING
 # ------------------------------
 
 frame_history = {}
-required_frames = 3  # object must appear in 3 frames before alert
+required_frames = 3
 
 # ------------------------------
 # MAIN LOOP
@@ -102,14 +88,11 @@ while True:
     if not ret:
         break
 
-    # Resize for faster inference
     resized = cv2.resize(frame, (640, 480))
 
-    # YOLO inference
     results = model(resized, device=device, conf=0.5, verbose=False)
 
     boxes = results[0].boxes
-
     detected_classes = []
 
     if boxes.cls is not None:
@@ -119,18 +102,17 @@ while True:
     current_objects = set(detected_classes)
 
     # ------------------------------
-    # STABILITY CHECK
+    # STABILITY LOGIC
     # ------------------------------
 
     for obj in current_objects:
-
         frame_history[obj] = frame_history.get(obj, 0) + 1
 
         if frame_history[obj] == required_frames:
             if obj in alerts:
                 speak_alert(alerts[obj])
 
-    # Reset objects not detected this frame
+    # Reset disappeared objects
     for obj in list(frame_history.keys()):
         if obj not in current_objects:
             frame_history[obj] = 0
@@ -140,12 +122,10 @@ while True:
     # ------------------------------
 
     annotated = results[0].plot()
-
     cv2.imshow("AI Smart Helmet Vision", annotated)
 
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
-
 
 # ------------------------------
 # CLEANUP

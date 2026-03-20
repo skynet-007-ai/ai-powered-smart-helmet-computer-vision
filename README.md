@@ -38,6 +38,8 @@ The system captures live video from a camera mounted on the helmet and processes
 
 Detected objects are mapped to **voice alerts** to notify the rider about potential hazards.
 
+The system emphasizes real-time decision-making under constrained environments rather than offline model accuracy benchmarks.
+
 ### Pipeline
 
 Camera → Frame Capture → YOLOv8 Detection → Decision Logic → Voice Alert
@@ -104,7 +106,7 @@ The **hardware system was fully assembled, wired, and tested by me** as part of 
 ai-powered-smart-helmet-computer-vision
 │
 ├── src
-│   │── smart_helmet_detection_system.py
+│   ├── smart_helmet_detection_system.py
 │   └── detection_using_media.py
 │
 ├── models
@@ -131,21 +133,23 @@ ai-powered-smart-helmet-computer-vision
 
 ---
 
-# 🚀 Running the Project
+## 🚀 Running the Project
 
-Clone the repository
+### 1. Clone the repository
 
 ```
 git clone https://github.com/skynet-007-ai/ai-powered-smart-helmet-computer-vision.git
+
+cd ai-powered-smart-helmet-computer-vision
 ```
 
-Install dependencies
+### 2. Install dependencies
 
 ```
 pip install -r requirements.txt
 ```
 
-Run the system
+### 3. Run the system
 
 ```
 python src/smart_helmet_detection_system.py

@@ -11,8 +11,9 @@ The goal of this project is to improve rider awareness and road safety using a l
 🥇 **1st Prize — Hack N Tech 1.0 (24-Hour Hackathon)**
 📍 Organized at **Indian Institute of Technology Patna**
 
-This prototype was developed during the hackathon as part of a **5-member team**.
-I proposed the project idea and worked as a **core contributor responsible for the AI system design and hardware prototype assembly**.
+Originally built during a 24-hour hackathon as part of a team (Caffeine Coderz), this system was later refined independently to explore real-world deployment challenges in edge AI systems.
+
+I proposed the idea and led the AI system design, implementation, and hardware integration.
 
 ---
 
@@ -40,6 +41,15 @@ Detected objects are mapped to **voice alerts** to notify the rider about potent
 ### Pipeline
 
 Camera → Frame Capture → YOLOv8 Detection → Decision Logic → Voice Alert
+
+---
+
+## 🎥 Demo
+
+This system performs real-time object detection and provides audio alerts for road hazards.
+
+▶️ Watch live demo:
+https://www.linkedin.com/posts/harshkumar0007_ai-machinelearning-computervision-activity-7440829619294855168-jttU
 
 ---
 
@@ -84,7 +94,7 @@ The prototype hardware setup includes:
 * Mini speaker system
 * Portable battery supply
 
-The **hardware assembly and prototype setup were implemented by me** during development.
+The **hardware system was fully assembled, wired, and tested by me** as part of the prototype development.
 
 ---
 
@@ -94,7 +104,8 @@ The **hardware assembly and prototype setup were implemented by me** during deve
 ai-powered-smart-helmet-computer-vision
 │
 ├── src
-│   └── smart_helmet_detection_system.py
+│   │── smart_helmet_detection_system.py
+│   └── detection_using_media.py
 │
 ├── models
 │   ├── yolov8n.pt
@@ -141,6 +152,23 @@ python src/smart_helmet_detection_system.py
 ```
 
 Press **q** to exit.
+
+---
+
+# ⚠️ Real-World Engineering Considerations
+
+This system is an early-stage edge AI prototype built under real-time constraints.
+
+Key challenges encountered:
+
+- Balancing accuracy vs latency  
+- Running inference on limited hardware  
+- Handling noisy detections in dynamic environments  
+- Designing stable alert logic without overwhelming the user  
+
+The focus of this project is not just detection accuracy, but building a complete:
+
+Perception → Decision → Alert pipeline under real-world constraints
 
 ---
 
